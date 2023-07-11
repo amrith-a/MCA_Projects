@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,logout,login
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from django.db.models import Q
+from django.db.models import 
 from .models import fileUpload
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
