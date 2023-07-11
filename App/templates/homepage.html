@@ -1,0 +1,257 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NID - Homepage</title>
+
+    <link rel="stylesheet" href="{% static 'css/summarizer.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+
+    <script src="{% static 'js/summarizer.js' %}"></script>
+</head>
+<body id = "main">
+
+    <div class="container">
+
+        <div class="scrollbar" id="style-2">
+            <div class="force-overflow"></div>
+        </div>
+
+        <div class="navbar" id = "navbar">
+            <div class="links">
+                <!-- <a href="{% url 'homepage' %}"><p class = "link">EASY</p></a> -->
+                <!-- <p onclick="scrollToTeam()" class = "link">FAST</p> -->
+                <img src="{% static 'images/cshort.png' %}" alt="" class = "logo" style="width: 140PX;">
+                
+                <!-- <p class = "link">FREE</p> -->
+                <!-- <a><p class = "link">SECURE</p></a> -->
+
+            </div>
+        </div>
+
+        <div class="banner">
+        
+            <div class="banner-text">
+                
+                <h1>NETWORK INTRUSION</h1>
+                <p>start by pasting the values below</p>
+                
+            </div>
+        
+            <img src="{% static 'images/low_poly2.png' %}" alt="" class = "banner-img">
+
+        </div>
+
+        <div class="wrapper">
+
+            <div class="complete-text">
+                
+                <h3>COMPLETE THE STEPS BELOW</h3>
+                <h1>STEPS</h1>
+                <p>Complete the steps below by uploading a csv / text file to predict,
+                    and click on next to get the result.You can also select the model to be used for prediction.</p>
+                
+            </div>
+
+            <div class="steps">
+
+                <div class="step stepone active">
+                    <div class="number">
+                        <h3>1</h3>
+                    </div>
+                    <h2>SELECT YOUR FILE TYPE</h2>
+                </div>
+
+                <div class="step steptwo">
+                    <div class="number">
+                        <h3>2</h3>
+                    </div>
+                    <h2>UPLOAD / PASTE TEXT</h2>
+                </div>
+
+                <div class="step stepthree">
+                    <div class="number">
+                        <h3>3</h3>
+                    </div>
+                    <h2>MODEL OUTPUT</h2>
+                </div>
+
+            </div>
+
+
+            <div class="select-file">
+
+                <div class="pdf" onclick = "selectFile('pdf')">
+                    <img src="{% static 'images/logocsv.png' %}" alt="">
+                    <div>
+                        <h3>CSV</h3>
+                        <p>upload a csv file</p>
+                    </div>
+                </div>
+
+                <div class="text" onclick = "selectFile('text')">
+                    <img src="{% static 'images/text.png' %}" alt="">
+                    <div>
+                        <h3>TEXT</h3>
+                        <p>Paste text in input</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="upload-file">
+
+                
+                    <div class="select-pdf" style="display: flex;justify-content: center;align-items: center;">
+                        <form action="">
+                            {% csrf_token %}
+                            <input class = "file" type="file" accept=".csv, .txt" id = "file" onchange = "changeFile(this)">
+                            <img src="{% static 'images/logocsv.png' %}" alt="">
+
+                            <div>
+                                <h4>Select csv</h4>
+                                <p class = "filename">select a csv file from your pc.</p>
+                            </div>
+
+                        </form>
+
+                        <select name="" id="" class="modelfile" style="padding: 28px;width: 250px;background-color: #141414;color: white;border: 2px solid #1a1a1a;border-radius: 8px;margin-left: 25px;z-index: 10;">
+                            <option value="xg">XGBOOST</option>
+                            <option value="auto">AUTO ENCODER</option>
+                        </select>
+                    </div>
+                    
+                
+            </div>
+
+            <div class="text-file">
+                <textarea class = "textData" name="text-file" id="textarea" cols="160" rows="1" placeholder = "Enter the values here..." onchange="enableNext()" style="z-index: 10;"></textarea>
+                <select name="" id="" class="model" style="padding: 28px;width: 250px;background-color: #141414;color: white;border: 2px solid #1a1a1a;border-radius: 8px;margin-left: 25px;z-index: 10;">
+                    <option value="xg">XGBOOST</option>
+                    <option value="auto">AUTO ENCODER</option>
+                </select>
+            </div>
+
+            <div class="summary">
+                <p class = "generated_summary" style="opacity: 1;"></p>
+                <table style="position: relative;z-index: 1;width: 1050px;" class="table">
+                
+                    <tr>
+                       
+                        
+                        
+
+                        <th style="font-weight: 600;font-size: 15px;width: 20%;">Accuracy</th>
+                        <th style="font-weight: 600;font-size: 15px;width: 30%;">Precision</th>
+                        <th style="font-weight: 600;font-size: 15px;width: 30%;">Recall</th>
+                        <th style="font-weight: 600;font-size: 15px;width: 10%;">F1</th>
+                        
+    
+                    </tr>
+                    
+                   
+                    <tr>
+                        
+                        <td style="text-align: center;font-size: 14px;width: 190px;" class="acc">0</td>
+    
+                        <td style="text-align: center;font-size: 14px;width: 150px;" class="prec">0</td>
+                        <td style="text-align: center;font-size: 14px;width: 150px;" class="rec">0</td>
+                        <td style="text-align: center;font-size: 14px;width: 280px;" class="f1">0</td>
+    
+                    </tr>
+                    
+                    
+                    
+                    
+                    
+                </table>
+            </div>
+
+            <div class="next-prev-btn">
+                <button class = "prev" onclick = "prevStep()"><i class="fas fa-chevron-left"></i> Prev step</button>
+                <button class = "next" onclick = "nextStep()">Next step <i class="fas fa-chevron-right"></i></i></button>
+            </div>
+
+            <div class="back-text">
+                <h1 style="text-align: center;">INTRUSION DETECTION</h1>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>Docs</p>
+            <img src="{% static 'images/cshort.png' %}" alt="">
+            <p>Contact</p>
+        </footer>
+
+    </div>
+    <script>
+
+function sendData(){
+
+    var data = new FormData()
+    console.log($("input[id^='file']")[0].files[0])
+    data.append("file",$("input[id^='file']")[0].files[0])
+    data.append("model",document.querySelector('.modelfile').value)
+    data.append("csrfmiddlewaretoken",'{{ csrf_token }}')
+
+    $.ajax({
+
+        method:"POST",
+        url:'/pdfUpload/',
+        processData:false,
+        contentType:false,
+        MimeType:"multipart/form-data",
+        data:data,
+        success:function(res){
+            console.log(res.summary)
+            document.querySelector('.generated_summary').style.display = "none";
+            document.querySelector('.table').style.display = "flex"
+            document.querySelector('.acc').innerText = res.accuracy 
+            document.querySelector('.prec').innerText = res.precision 
+            document.querySelector('.rec').innerText = res.recall 
+            document.querySelector('.f1').innerText = res.f1   
+        }
+    })
+}
+
+function sendTextData(){
+
+var data = new FormData()
+console.log(document.querySelector('.textData').value)
+data.append("text",document.querySelector('.textData').value)
+data.append("model",document.querySelector('.model').value)
+data.append("csrfmiddlewaretoken",'{{ csrf_token }}')
+
+$.ajax({
+
+    method:"POST",
+    url:'/textData/',
+    processData:false,
+    contentType:false,
+    MimeType:"multipart/form-data",
+    data:data,
+    success:function(res){
+        console.log(res.resp)
+        document.querySelector('.generated_summary').style.display = "flex"
+        document.querySelector('.generated_summary').style.justifyContent = "center"
+        document.querySelector('.table').style.display = "none"
+        document.querySelector('.generated_summary').textContent = "Detection : "+res.resp;
+
+    }
+})
+}
+
+
+
+    </script>
+</body>
+</html>
